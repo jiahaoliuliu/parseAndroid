@@ -4,7 +4,9 @@ import android.os.Bundle;
 
 import com.parse.Parse;
 import com.parse.ParseAnalytics;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
+import com.parse.PushService;
 
 import android.app.Activity;
 import android.view.Menu;
@@ -18,6 +20,9 @@ public class MainActivity extends Activity {
 		Parse.initialize(this, "sg01PjAznPmLxvQSerlm6fFtJ8bAq8AgZe58emP5", "IQlsc3R2e3QynjawQ6bZsZgfsbJwbqO9BbkLyHle");
 		ParseAnalytics.trackAppOpened(getIntent());
 		
+		PushService.setDefaultPushCallback(this, MainActivity.class);
+		ParseInstallation.getCurrentInstallation().saveInBackground();
+
 		ParseObject testObject = new ParseObject("TestObject");
 		testObject.put("foo", "bar");
 		testObject.saveInBackground();
