@@ -9,7 +9,9 @@ import com.parse.ParseObject;
 import com.parse.PushService;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
+import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
@@ -17,22 +19,18 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		Parse.initialize(this, "sg01PjAznPmLxvQSerlm6fFtJ8bAq8AgZe58emP5", "IQlsc3R2e3QynjawQ6bZsZgfsbJwbqO9BbkLyHle");
+		Parse.initialize(this, "sg01PjAzn8mLxvQSerlm6fFtJ8bAq8AgZe58emP5", "IQlsc3R2e30ynjawQ6bZsZgfsbJwbqO9BbkLyHle");
 		ParseAnalytics.trackAppOpened(getIntent());
 		
 		PushService.setDefaultPushCallback(this, MainActivity.class);
 		ParseInstallation.getCurrentInstallation().saveInBackground();
-
-		ParseObject testObject = new ParseObject("TestObject");
-		testObject.put("foo", "bar");
-		testObject.saveInBackground();
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
+		
+		Intent receivedIntent = getIntent();
+		String messageReceived = receivedIntent.getStringExtra(JsonReceiver.MESSAGE_ACTION);
+		if (messageReceived != null && !messageReceived.equals("")) {
+			TextView messageTextView = (TextView)findViewById(R.id.messageTextView);
+			messageTextView.setText(messageReceived);
+		}
 	}
 
 }
